@@ -11,3 +11,10 @@ server:
   port: 8080
 #mybatis:
 #  mapper-locations: classpath:mapper/*.xml
+
+# MinIO文件系统
+minio:
+  url: http://101.35.112.107:9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucket: blog
