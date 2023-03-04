@@ -1,7 +1,9 @@
 package com.jiem.blog.controller;
 
+import com.jiem.blog.util.DateUtil;
 import com.jiem.blog.util.MinioUtil;
 import com.jiem.blog.util.Result;
+import com.jiem.blog.util.StringUtil;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.util.Date;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/file")
@@ -20,15 +24,22 @@ public class FileController {
     MinioUtil minioUtil;
 
     @RequestMapping(value = "/uploadfile", method = RequestMethod.POST)
-    public Result fileupload(@RequestParam MultipartFile uploadfile, @RequestParam String bucket,
+    public Result fileupload(@RequestParam MultipartFile uploadfile,
                              @RequestParam(required = false) String objectName) throws Exception {
+        String bucket = "blog";
         minioUtil.createBucket(bucket);
         String url; // d41d8cd98f00b204e9800998ecf8427e
-        if (objectName != null) {
-            url = minioUtil.uploadFile(uploadfile.getInputStream(), bucket, objectName + "/" + uploadfile.getOriginalFilename());
-        } else {
-            url = minioUtil.uploadFile(uploadfile.getInputStream(), bucket, uploadfile.getOriginalFilename());
+
+        if (StringUtil.isBlank(objectName)){
+            objectName = DateUtil.convertDate2String(new Date());
         }
+
+        String name = uploadfile.getOriginalFilename();
+
+        name = UUID.randomUUID().toString() + name.substring(name.indexOf("."));
+
+        url = minioUtil.uploadFile(uploadfile.getInputStream(), bucket, objectName + "/" + name);
+
         return Result.success(url);
     }
 
