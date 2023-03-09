@@ -38,7 +38,6 @@ public class MinioUtil {
 								.method(Method.GET)
 								.bucket("blog")
 								.object(objectName)
-								.expiry(60 * 60 * 24)
 								.build());
 		System.out.println(url);
 		return url;

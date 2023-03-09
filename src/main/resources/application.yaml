@@ -1,9 +1,9 @@
 spring:
   datasource:
-    username: root
-    password: root
+    username: jiem
+    password: jiem
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/blog
+    url: jdbc:mysql://101.35.112.107:3306/blog
   jackson:
     date-format: yyyy-MM-dd
     time-zone: GMT+8
