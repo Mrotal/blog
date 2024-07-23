@@ -27,7 +27,6 @@ public class ArticleController {
     @GetMapping("{id}")
     public Result getDetail(@PathVariable String id) {
         Article article = iArticleService.getById(id);
-        System.out.println(article);
         return Result.success(article);
     }
 
